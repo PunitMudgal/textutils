@@ -28,6 +28,7 @@ const handleCopy = () => {
     text.select();
     navigator.clipboard.writeText(text.value);
     props.showAlert("Copied to Clipboard!", "success");
+    document.getSelection().removeAllRanges();              // removes selection while copying text
 }
 
 const handleExtraSpaces = () => {
@@ -40,28 +41,28 @@ const handleExtraSpaces = () => {
     return (
         <>
         <div className = "container" style={{color: props.mode==='dark'? 'white': '#1f2937'}}>
-            <h2 >{props.Heading}  </h2>
+            <h2 className='mb-4'>{props.Heading}  </h2>
             <div className="mb-3">
-                <textarea className="form-control" id="myBox" rows="8" value={text} style={{background: props.mode==='dark'? '#d4d4d8': 'white', color:props.mode==='dark'? 'black': 'black'}}onChange={handleOnChange}></textarea>
+                <textarea className="form-control" id="myBox" rows="8" value={text} style={{background: props.mode==='dark'? '#13466e': 'white', color:props.mode==='dark'? 'white': 'black'}}onChange={handleOnChange}></textarea>
             </div>
-            <button className="btn btn-primary mx-2" onClick={handleUpClick}>Converet To UpperCase</button>
-            <button className="btn btn-primary mx-2" onClick={handleLoClick}>Converet To LowerCase</button>
-            <button className="btn btn-primary mx-2" onClick={handleCopy}>Copy Text</button>
-            <button className="btn btn-primary mx-2" onClick={handleExtraSpaces}>Remove Extra Spaecs</button>
+            <button disabled={text.length===0} className="btn btn-primary mx-2 my-1" onClick={handleUpClick}>Converet To UpperCase</button>
+            <button disabled={text.length===0} className="btn btn-primary mx-2 my-1" onClick={handleLoClick}>Converet To LowerCase</button>
+            <button disabled={text.length===0} className="btn btn-primary mx-2 my-1" onClick={handleCopy}>Copy Text</button>
+            <button disabled={text.length===0} className="btn btn-primary mx-2 my-1" onClick={handleExtraSpaces}>Remove Extra Spaecs</button>
 
             <button type="button" className="btn btn-danger mx-2" onClick={handleClear}>Clear Text</button>
         </div>
         <div className="container my-3" style={{color: props.mode==='dark'? 'white': '#1f2937'}}>
             <h6>Your Text Summary</h6>
-            <p>{text.split(" ").length} words and {text.length} charachers</p>
+            <p>{text.split(" ").filter((element) =>{return element.length!==0}).length} words and {text.length} charachers</p>
             <hr className='bg-info'/>
             <h6>Spaces Count</h6>
             <p>{text.split(" ").length-1}</p>
             <hr className='bg-info'/>
-            <p>Reading Time: {0.008 * text.split(" ").length} </p>
+            <p>Reading Time: {0.008 * text.split(" ").filter((element) =>{return element.length!==0}).length} </p>
             <hr className='bg-info' />
             <h6>Preview</h6>
-            <p>{text.length>0? text:"Enter something in the textbox to see preview here."}</p>
+            <p>{text.length>0? text:"Nothing To Preview"}</p>
             <hr className='bg-info'/>
         </div>
         </>
